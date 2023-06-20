@@ -3,19 +3,23 @@
 
 import * as React from 'react'
 
-function Greeting({initialName = ''}) {
-  const [name, setName] = React.useState(retrieveName)
-  const [count, setCount] = React.useState(0)
-
-  function retrieveName() {
-    console.log('retrieving name')
-    return window.localStorage.getItem('name') ?? initialName
+function useLocalStorageState(key, initialValue) {
+  const [value, setValue] = React.useState(retrieveValue)
+  function retrieveValue() {
+    console.log(`retrieving ${key}`)
+    return window.localStorage.getItem(key) ?? initialValue
   }
 
   React.useEffect(() => {
-    console.log('setting name')
-    window.localStorage.setItem('name', name)
-  }, [name])
+    console.log(`setting ${key}`)
+    window.localStorage.setItem(key, value)
+  }, [key, value])
+  return [value, setValue]
+}
+
+function Greeting({initialName = ''}) {
+  const [count, setCount] = React.useState(0)
+  const [name, setName] = useLocalStorageState('name', initialName)
 
   function handleChange(event) {
     setName(event.target.value)
