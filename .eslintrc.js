@@ -22,5 +22,6 @@ module.exports = {
     indent: ['warn'],
     quotes: ['warn'],
     'prefer-const': ['warn'],
+    'react-hooks/exhaustive-deps': ['error'],
   },
 }
