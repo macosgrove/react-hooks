@@ -3,15 +3,17 @@
 
 import * as React from 'react'
 
-function Greeting({initialName=''}) {
+function Greeting({initialName = ''}) {
   const [name, setName] = React.useState(retrieveName)
+  const [count, setCount] = React.useState(0)
 
   function retrieveName() {
-    console.log("retrieving name")
+    console.log('retrieving name')
     return window.localStorage.getItem('name') ?? initialName
   }
 
   React.useEffect(() => {
+    console.log('setting name')
     window.localStorage.setItem('name', name)
   })
 
@@ -20,6 +22,7 @@ function Greeting({initialName=''}) {
   }
   return (
     <div>
+      <button onClick={() => setCount(prev => prev + 1)}>{count}</button>
       <form>
         <label htmlFor="name">Name: </label>
         <input value={name} onChange={handleChange} id="name" />
@@ -30,7 +33,7 @@ function Greeting({initialName=''}) {
 }
 
 function App() {
-  return <Greeting initialName='MAC'/>
+  return <Greeting initialName="MAC" />
 }
 
 export default App

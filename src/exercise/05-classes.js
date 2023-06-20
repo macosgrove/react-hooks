@@ -20,9 +20,11 @@ class Tilt extends React.Component {
     }
     VanillaTilt.init(tiltNode, vanillaTiltOptions)
   }
+
   componentWillUnmount() {
     this.tiltRef.current.vanillaTilt.destroy()
   }
+
   render() {
     return (
       <div ref={this.tiltRef} className="tilt-root">
