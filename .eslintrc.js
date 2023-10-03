@@ -24,4 +24,12 @@ module.exports = {
     'prefer-const': ['warn'],
     'react-hooks/exhaustive-deps': ['error'],
   },
+  overrides: [
+    {
+      files: ['**/__tests__/*.js'],
+      env: {
+        jest: true,
+      },
+    },
+  ],
 }
