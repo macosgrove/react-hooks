@@ -31,22 +31,37 @@ function PokemonInfo({pokemonName}) {
     case 'resolved':
       return <PokemonDataView pokemon={state.pokemonData} />
     case 'rejected':
-      return <PokemonError />
+      throw new Error(state.error.message)
     default:
-      return <div>`Invalid status ${state.status}`</div>
+      throw new Error(`Invalid status ${state.status}`)
   }
 
   function IdleMessage() {
     return <div>Enter the name of a Pokemon to begin</div>
   }
+}
 
-  function PokemonError() {
-    return (
-      <div role="alert">
-        There was an error:
-        <pre style={{whiteSpace: 'normal'}}>{state.error.message}</pre>
-      </div>
-    )
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {hasError: false}
+  }
+
+  static getDerivedStateFromError(error) {
+    return {hasError: true, error}
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div role="alert">
+          There was an error:
+          <pre style={{whiteSpace: 'normal'}}>{this.state.error.message}</pre>
+        </div>
+      )
+    }
+
+    return this.props.children
   }
 }
 
@@ -62,7 +77,9 @@ function App() {
       <PokemonForm pokemonName={pokemonName} onSubmit={handleSubmit} />
       <hr />
       <div className="pokemon-info">
-        <PokemonInfo pokemonName={pokemonName} />
+        <ErrorBoundary key={pokemonName}>
+          <PokemonInfo pokemonName={pokemonName} />
+        </ErrorBoundary>
       </div>
     </div>
   )
